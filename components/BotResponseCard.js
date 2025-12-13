@@ -18,7 +18,7 @@ const OtherSuggestionsList = ({ items }) => {
             <h3 className="text-xs font-semibold text-gray-400 mb-2">Other ideas to try...</h3>
             <ul className="space-y-1">
                 {items.map((item, index) => (
-                    <motion.li 
+                    <motion.li
                         key={item + index}
                         className="text-xs sm:text-sm text-gray-300"
                         initial={{ opacity: 0, x: -10 }}
@@ -46,7 +46,7 @@ export default function BotResponseCard({ response }) {
 
     useEffect(() => {
         const controls = animate(count, targetScore, { duration: 2, ease: "easeOut" });
-        
+
         if (suggestedFood && !suggestedFood.toLowerCase().includes("failed") && !suggestedFood.toLowerCase().includes("error")) {
             setImageLoading(true);
             fetch(`/api/generateFoodImage?foodName=${encodeURIComponent(suggestedFood)}`)
@@ -103,15 +103,15 @@ export default function BotResponseCard({ response }) {
                     </div>
                     <div>
                         <p className="text-xs text-gray-400 mb-1">Reason</p>
-                        <motion.p 
-                            className="text-sm text-gray-300 overflow-hidden" 
+                        <motion.p
+                            className="text-sm text-gray-300 overflow-hidden"
                             animate={{ height: isExpanded ? 'auto' : '36px' }}
                             initial={{ height: '36px' }}
                         >
                             {reason}
                         </motion.p>
-                        <button 
-                            onClick={() => setIsExpanded(!isExpanded)} 
+                        <button
+                            onClick={() => setIsExpanded(!isExpanded)}
                             className="text-xs text-blue-400 hover:underline mt-1"
                         >
                             {isExpanded ? 'Show Less' : 'Show More...'}

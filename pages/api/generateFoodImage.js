@@ -1,38 +1,21 @@
-// pages/api/generateFoodImage.js (FINAL - Google Image Search)
+// pages/api/generateFoodImage.js (FINAL - Free AI Generator)
 
 export default async function handler(req, res) {
     const { foodName } = req.query;
+
+    // Default fallback
     if (!foodName) {
-        return res.status(400).json({ error: 'foodName parameter is required' });
+        return res.status(200).json({ imageUrl: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=800&q=80" });
     }
 
-    const API_KEY = process.env.GOOGLE_SEARCH_API_KEY;
-    const SEARCH_ENGINE_ID = process.env.SEARCH_ENGINE_ID;
-    // We make the query very specific for better results
-    const query = `photograph of ${foodName} indian dish`;
-    
-    const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&q=${encodeURIComponent(query)}&searchType=image&num=1`;
+    // Sanitize
+    const cleanName = foodName.replace(/[^a-zA-Z0-9 ]/g, "");
 
-    try {
-        const searchResponse = await fetch(url);
-        if (!searchResponse.ok) {
-            throw new Error(`Google Search API failed: ${await searchResponse.text()}`);
-        }
+    // Use Pollinations.ai (Free, High Quality, No Key)
+    // We add 'random' seed based on name to ensure stability for same food, but variety across foods.
+    const prompt = encodeURIComponent(`professional cinematic shot of delicious ${cleanName} indian food, steam rising, 8k resolution, dramatic lighting`);
+    const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?nologo=true&seed=${cleanName.length}&width=800&height=600`;
 
-        const searchResult = await searchResponse.json();
-        
-        if (!searchResult.items || searchResult.items.length === 0) {
-            throw new Error("No image found for this food.");
-        }
-
-        // Get the URL of the first and best image result
-        const imageUrl = searchResult.items[0].link;
-
-        // Send the URL back to the frontend
-        res.status(200).json({ imageUrl });
-
-    } catch (error) {
-        console.error("Image search failed:", error);
-        res.status(500).json({ error: 'Failed to find an image' });
-    }
+    // Return immediately. The browser will load the image from the URL.
+    res.status(200).json({ imageUrl });
 }
