@@ -1,38 +1,148 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 🧠 MoodBite.Ai (v3.0)
+> **The Offline-First Sensory Food Interface**
 
-## Getting Started
+[![Deploy with Vercel](https://vercel.com/button)](https://moodbiteai.vercel.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/singhcod3r)
 
-First, run the development server:
+**MoodBite** is a sophisticated emotional regulation system that uses culinary intervention to balance human mood states. Unlike generic AI wrappers, it runs on a custom **Deterministic Emotional Vector Machine (EVM)**, allowing for high-precision, offline emotion detection and reasoning.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+🌐 **Live Demo:** [https://moodbiteai.vercel.app/](https://moodbiteai.vercel.app/)
+
+---
+
+## 🏛️ Architectural Diagram
+
+The core of MoodBite v3.0 relies on an "Expert Panel" architecture where multiple specialized logic modules vote on the user's state before a final "Judge" determines the emotional vector.
+
+```mermaid
+graph TD
+    User([User]) -->|Text/Voice| Input
+    User -->|Fridge Photo| Vision[Gemini Vision API]
+    
+    subgraph "Sensory Layer"
+        Input --> Context[Context Expert]
+        Input --> Lexicon[Lexicon Expert]
+        Input --> Conflict[Conflict Expert]
+    end
+
+    Vision -->|Ingredients| FoodEngine
+
+    subgraph "Decision Layer (The Judge)"
+        Context & Lexicon & Conflict --> EVM{EVM Vector Engine}
+        EVM -->|Valence, Arousal, Control| State[Emotional State]
+    end
+
+    subgraph "Action Layer"
+        State --> Strategy[Strategy Selector]
+        Strategy --> FoodEngine[Food Recommendation Engine]
+        FoodEngine -->|Database + Fridge Match| Response
+    end
+    
+    Response --> UI[Final UI]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## 🎨 Design Model
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+MoodBite follows a **3-Layer Sensory Design Philosophy**:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+1.  **The Sensory Surface (UI)**:
+    *   **Glassmorphism**: Built with `backdrop-filter`, `bg-white/6`, and deep gradients to mimic a futuristic dashboard.
+    *   **Dynamic Backgrounds**: The environment shifts colors (Red for Anger, Blue for Grief) based on real-time vector analysis.
+    *   **Interactive Input**: Supports **Voice Command** (Web Speech API) and **Vision** (Upload Fridge Photos).
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2.  **The Expert Core (Logic)**:
+    *   **Offline-First**: 90% of the logic (Emotion detection, Reasoning, Food matching) runs locally without external API calls.
+    *   **Deterministic**: Same input = Same output. No hallucinations.
+    *   **Explainable AI**: The system generates a "Chef's Note" explaining *why* a specific food regulates a specific mood.
 
-## Learn More
+3.  **The Vision Layer (Integration)**:
+    *   Integrates **Google Gemini 1.5 Flash** to analyze refrigerator contents and cross-reference them with the emotional strategy.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+## 🛠️ Implementation & Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+*   **Framework**: [Next.js 15](https://nextjs.org/) (React 19)
+*   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) + Framer Motion
+*   **AI (Vision)**: Google Gemini 1.5 Flash
+*   **AI (Core)**: Custom JS-based Expert System (No LLM dependency for logic)
+*   **Image Gen**: Pollinations.ai (Real-time food visualization)
 
-## Deploy on Vercel
+### Directory Structure
+```bash
+├── components/       # UI Building Blocks (ModernInputBar, HeroFoodCard)
+├── evm/             # The Brain (Expert Vector Machine)
+│   ├── dictionaries.js  # 28-Emotion Lexicon
+│   ├── experts.js       # Signal Processors
+│   ├── judge.js         # Vector Math & Decision Logic
+│   └── foodEngine.js    # Strategy & Recipe Database
+├── pages/           # Routes (Home, About, API)
+└── public/          # Static Assets
+```
 
-Live Project URL LInk --> https://moodbiteai.vercel.app/
+---
+
+## 🔄 Deployment Workflow
+
+The project is configured for seamless deployment on **Vercel**.
+
+### GitHub Actions Workflow (CI/CD)
+*While Vercel handles deployments automatically, here is the logic flow for a standard CI pipeline:*
+
+```yaml
+name: MoodBite Build Pipeline
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: npm ci
+      - name: Lint Analysis
+        run: npm run lint
+      - name: Production Build
+        run: npm run build
+      - name: Test Offline Engine
+        run: node evm/test_suite.js
+```
+
+---
+
+## 🚀 Getting Started
+
+1.  **Clone the Repo**
+    ```bash
+    git clone https://github.com/singhcod3r/MoodBite-Version-2.0.git
+    cd MoodBite-Version-2.0
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+
+3.  **Set Environment Variables**
+    Create a `.env.local` file:
+    ```env
+    GEMINI_API_KEY=your_gemini_key_here
+    ```
+
+4.  **Run Development Server**
+    ```bash
+    npm run dev
+    ```
+
+5.  **Open Browser**
+    Visit `http://localhost:3000`.
+
+---
+
+### © 2025 MoodBite Project
+Designed & Engineered by **[Ayush Singh](https://github.com/singhcod3r)**.
