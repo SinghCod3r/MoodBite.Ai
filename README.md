@@ -35,4 +35,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
-Live Project URL LInk --> https://mood-bite-version-2-0.vercel.app/
+Live Project URL LInk --> https://moodbiteai.vercel.app/
