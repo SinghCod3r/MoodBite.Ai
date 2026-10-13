@@ -1,0 +1,50 @@
+{
+  "name": "MoodBite.Ai — Sensory Culinary Intelligence",
+  "short_name": "MoodBite",
+  "description": "Domain-specific, explainable food recommendation intelligence system based on mood, context, and dietary constraints.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050508",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["food", "lifestyle", "health", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Analyze Mood",
+      "url": "/",
+      "description": "Get a personalized food recommendation"
+    },
+    {
+      "name": "About MoodBite",
+      "url": "/about",
+      "description": "Learn about the EVM vector engine"
+    }
+  ]
+}

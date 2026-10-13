@@ -1,21 +1,32 @@
-// pages/api/generateFoodImage.js (FINAL - Free AI Generator)
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
+
+import { resolveFoodImage } from '../../lib/image/validator';
 
 export default async function handler(req, res) {
-    const { foodName } = req.query;
+  if (req.method !== 'GET') {
+    return res.status(405).json({ message: 'Method Not Allowed' });
+  }
 
-    // Default fallback
-    if (!foodName) {
-        return res.status(200).json({ imageUrl: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=800&q=80" });
-    }
+  const { foodName, category } = req.query;
 
-    // Sanitize
-    const cleanName = foodName.replace(/[^a-zA-Z0-9 ]/g, "");
+  try {
+    const result = await resolveFoodImage(foodName, category);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("[generateFoodImage] Error resolving image:", error);
 
-    // Use Pollinations.ai (Free, High Quality, No Key)
-    // We add 'random' seed based on name to ensure stability for same food, but variety across foods.
-    const prompt = encodeURIComponent(`professional cinematic shot of delicious ${cleanName} indian food, steam rising, 8k resolution, dramatic lighting`);
-    const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?nologo=true&seed=${cleanName.length}&width=800&height=600`;
-
-    // Return immediately. The browser will load the image from the URL.
-    res.status(200).json({ imageUrl });
+    return res.status(200).json({
+      imageUrl: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+      isCached: false,
+      isValidated: false,
+      confidence: 0.60
+    });
+  }
 }

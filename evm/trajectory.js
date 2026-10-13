@@ -1,5 +1,11 @@
-// evm/trajectory.js
-// LEVEL 4: Session Flow Tracking
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
 
 export function analyzeTrajectory(history) {
     if (!history || history.length < 2) return { trend: 'Stable', description: "Establishing baseline..." };
@@ -7,7 +13,7 @@ export function analyzeTrajectory(history) {
     const current = history[history.length - 1];
     const previous = history[history.length - 2];
 
-    // Map emotions to intensity (Pseudo-Arousal)
+
     const intensity = {
         anger: 3, fear: 3,
         stress: 2, joy: 2,

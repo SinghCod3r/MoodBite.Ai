@@ -1,10 +1,18 @@
-// evm/strategy.js (Clean Food Lists + Tuned Logic)
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
+
 import { emotionWeights } from './weights';
 
-// 3️⃣ CLEAN FOOD LISTS (NO WRONG FOOD ANYMORE)
+
 const foodDatabase = {
     anger: {
-        strategy: "Spicy Release", // "Release food"
+        strategy: "Spicy Release",
         foods: [
             "Spicy Chaat",
             "Crispy Samosa",
@@ -14,7 +22,7 @@ const foodDatabase = {
         ]
     },
     stress: {
-        strategy: "Calming & Warmth", // "Calming & familiar"
+        strategy: "Calming & Warmth",
         foods: [
             "Masala Chai",
             "Ginger Tea",
@@ -24,7 +32,7 @@ const foodDatabase = {
         ]
     },
     sadness: {
-        strategy: "Comfort & Warmth", // "Comfort"
+        strategy: "Comfort & Warmth",
         foods: [
             "Comforting Khichdi",
             "Dal Rice",
@@ -34,7 +42,7 @@ const foodDatabase = {
         ]
     },
     fear: {
-        strategy: "Grounding Stability", // "Grounding"
+        strategy: "Grounding Stability",
         foods: [
             "Warm Milk",
             "Herbal Tea",
@@ -43,7 +51,7 @@ const foodDatabase = {
         ]
     },
     joy: {
-        strategy: "Celebration Feast", // "Celebration"
+        strategy: "Celebration Feast",
         foods: [
             "Vegetable Biryani",
             "Cheesy Pizza",
@@ -100,16 +108,16 @@ export function buildReason(text, strategy, food) {
     return reasons[index];
 }
 
-// 4D / Weighted Logic Helpers
+
 export function nameEmotion(vector, feedbackAdjustments = []) {
-    // Step 3: Strict Emotion Naming Logic (Conflict Boost Aware)
+
     if (vector.valence <= -0.6 && vector.arousal > 0.6) return "anger";
     if (vector.valence < -0.4 && vector.control < 0.4) return "stress";
     if (vector.valence <= -0.6 && vector.arousal < 0.3) return "sadness";
     if (vector.valence > 0.4) return "joy";
 
-    // Fallback based on weights if needed, but Step 3 suggests strict rules first.
-    // If strict rules fail, we fall back to:
+
+
     if (Math.abs(vector.valence) < 0.2 && Math.abs(vector.arousal) < 0.2) return "neutral";
 
     return "mixed";
@@ -117,5 +125,5 @@ export function nameEmotion(vector, feedbackAdjustments = []) {
 
 export function foodFromEVM(vector) {
     const e = nameEmotion(vector);
-    return manualStrategy(e); // Returns strategy string
+    return manualStrategy(e);
 }

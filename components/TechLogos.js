@@ -1,6 +1,12 @@
-// components/TechLogos.js
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
 
-// A simple container for our logos
 const Icon = ({ children }) => <div className="w-12 h-12 rounded-lg bg-white/90 text-black flex items-center justify-center">{children}</div>;
 
 export const NextjsLogo = () => <Icon><svg className="w-8 h-8" fill="none" viewBox="0 0 121 118"><path fill="#000" d="M120.5 118V0L45.5 73.5V118h75Z M0 0v118h43.5V44L0 0Z"></path></svg></Icon>;

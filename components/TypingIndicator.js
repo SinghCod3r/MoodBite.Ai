@@ -1,4 +1,12 @@
-// components/TypingIndicator.js
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
+
 import { motion } from 'framer-motion';
 
 const containerVariants = {
@@ -21,7 +29,7 @@ const circleTransition = {
 export default function TypingIndicator() {
     return (
         <div className="flex justify-start">
-            <motion.div 
+            <motion.div
                 className="flex items-end space-x-1.5 p-4"
                 variants={containerVariants}
                 initial="start"

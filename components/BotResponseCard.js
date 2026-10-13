@@ -1,4 +1,12 @@
-// components/BotResponseCard.js (Final Polished & Responsive Version)
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
+
 import { useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 
@@ -8,7 +16,6 @@ const ImagePlaceholder = () => (
     </div>
 );
 
-// A component for the "Other Suggestions" list
 const OtherSuggestionsList = ({ items }) => {
     if (!Array.isArray(items) || items.length === 0) {
         return null;
@@ -32,7 +39,6 @@ const OtherSuggestionsList = ({ items }) => {
         </div>
     );
 };
-
 
 export default function BotResponseCard({ response }) {
     const { predictedMood, suggestedFood, reason, confidenceScore, source, otherSuggestions } = response;
@@ -74,7 +80,7 @@ export default function BotResponseCard({ response }) {
 
     return (
         <div className="flex items-start space-x-3 w-full max-w-lg">
-            {/* Gemini-style Avatar */}
+
             <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
                 <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.082 13.918L10 16.5l-1.082-2.582L6.336 13l2.582-1.082L10 9.336l1.082 2.582L13.664 13l-2.582 1.082zm6.664.5L16.5 11.836l-1.246-2.582L12.672 10.5l2.582 1.246L16.5 14.33l1.246-2.584L20.328 10.5l-2.582-1.246zM12 2a10 10 0 100 20 10 10 0 000-20z"></path></svg>
             </div>

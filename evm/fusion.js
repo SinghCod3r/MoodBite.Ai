@@ -1,7 +1,12 @@
-// evm/fusion.js
-// LEVEL 4: Granular Conflict-Aware Fusion
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
 
-// 1. COMPLETE CONFLICT-WORD LIST
 const STRONG_CONFLICT_WORDS = [
     "fight", "fighting", "fought",
     "yell", "yelled", "yelling",
@@ -33,26 +38,26 @@ function detectConflictLevel(text) {
 export function fuseSignals(signals) {
     const { local, textRaw } = signals;
 
-    // Step 1: Detect Conflict Level
+
     const conflictLevel = detectConflictLevel(textRaw);
 
-    // SENTIMENT (Valence)
-    // local.score is typically -5 to 5. We map it to -1 to 1.
+
+
     const sentimentScore = local?.score || 0;
     let valence = Math.max(-1, Math.min(1, sentimentScore / 5));
 
-    // AROUSAL (Intensity)
-    // Base arousal from sentiment intensity
+
+
     let arousal = Math.abs(sentimentScore) * 0.15;
 
-    // GENERIC KEYWORDS (Restored for non-conflict cases like "tired")
+
     const highArousal = ['urgently', 'now', 'panic', 'fast', 'rush'];
     const lowArousal = ['tired', 'bored', 'sleepy', 'slow', 'calm', 'tiring', 'exhaust', 'drain'];
 
     if (highArousal.some(w => textRaw.toLowerCase().includes(w))) arousal += 0.4;
     else if (lowArousal.some(w => textRaw.toLowerCase().includes(w))) arousal -= 0.3;
 
-    // 🔥 EXACT AROUSAL BOOST VALUES (Conflict Overrides)
+
     if (conflictLevel === "medium") {
         arousal += 0.30;
     } else if (conflictLevel === "strong") {
@@ -61,19 +66,19 @@ export function fuseSignals(signals) {
 
     arousal = Math.max(-1, Math.min(1, arousal));
 
-    // CONTROL & CERTAINTY - Adjust based on conflict severity
+
     let control = 0.5;
     let certainty = 0.5;
 
     if (conflictLevel === "strong") {
-        control = 0.2; // Very low control in fights
-        certainty = 0.8; // Very sure about the anger
+        control = 0.2;
+        certainty = 0.8;
     } else if (conflictLevel === "medium") {
         control = 0.3;
-        certainty = 0.6; // Variable in arguments
+        certainty = 0.6;
     } else {
-        // Default Logic for No Conflict (restored logic)
-        // If "tired" or "overwhelmed", decrease control (implies I can't handle it)
+
+
         if (textRaw.match(/can't|cannot|distracted|overwhelmed|helpless|tired|tiring|exhaust/i)) control -= 0.3;
         if (textRaw.match(/will|going to|plan|decided|handle/i)) control += 0.3;
 
@@ -87,22 +92,22 @@ export function fuseSignals(signals) {
     };
 }
 
-// LEVEL 6: Explainable AI (XAI)
+
 export function explainVector(vector) {
     const reasons = [];
 
-    // 1. Valence (Positivity)
+
     if (vector.valence < -0.5) reasons.push("Negative sentiment detected");
     else if (vector.valence > 0.5) reasons.push("Positive outlook identified");
 
-    // 2. Arousal (Energy)
+
     if (vector.arousal > 0.5) reasons.push("High tension/energy levels");
     else if (vector.arousal < -0.5) reasons.push("Low energy/lethargy");
 
-    // 3. Control (Situation)
+
     if (vector.control < 0.3) reasons.push("Feeling lack of control");
 
-    // 4. Certainty (Confidence)
+
     if (vector.certainty < 0.3) reasons.push("Uncertainty/Confusion detected");
 
     if (reasons.length === 0) reasons.push("Balanced emotional state");

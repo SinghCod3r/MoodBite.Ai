@@ -1,6 +1,11 @@
-// evm/weights.js
-// Defines the "Ideal Vector" for each emotion
-// Used for Dot Product similarity calculation in strategy.js
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
 
 export const emotionWeights = {
     anger: { valence: -0.8, arousal: 0.8, control: 0.2 },

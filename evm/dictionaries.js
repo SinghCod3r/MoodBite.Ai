@@ -1,5 +1,11 @@
-// evm/dictionaries.js
-// CORE: 28-Emotion Ontology & Lexicon
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
 
 export const NEGATIVE_EMOTIONS = [
     "anger", "rage", "frustration", "sadness", "fear", "anxiety",
@@ -14,15 +20,15 @@ export const POSITIVE_EMOTIONS = [
     "joy", "excitement", "love", "gratitude", "pride", "relief"
 ];
 
-// Lexicons (Weighted Keywords)
+
 export const EMOTION_LEXICON = {
-    // --- NEGATIVE ---
+
     anger: ["anger", "angry", "mad", "upset", "hateful", "furious", "irritated", "annoyed", "bitter", "fuming"],
     rage: ["rage", "furious", "livid", "exploded", "violence", "hate", "fight", "scream", "yell", "shout", "abuse"],
     frustration: ["frustrated", "stuck", "annoying", "blocked", "fail", "useless", "stupid", "dumb", "argh"],
     sadness: ["sad", "sadness", "depressed", "unhappy", "cry", "crying", "tears", "blue", "down", "melancholy"],
     grief: ["grief", "loss", "lost", "mourn", "mourning", "dead", "died", "gone", "heartbroken"],
-    fear: ["fear", "afraid", "scared", "terrified", "panic", "horror", "frightened", "spine", "chilling"],
+    fear: ["fear", "afraid", "scared", "terrified", "panic", "horror", "frightened", "worried", "worry", "anxious", "nervous", "dread"],
     anxiety: ["anxious", "nervous", "worry", "worried", "tense", "uneasy", "jittery", "dread"],
     shame: ["shame", "ashamed", "bad person", "wrong", "disgrace", "humiliation"],
     guilt: ["guilt", "guilty", "sorry", "apologize", "fault", "mistake", "regret"],
@@ -31,31 +37,33 @@ export const EMOTION_LEXICON = {
     disappointment: ["disappointed", "let down", "expectation", "failed", "sucks", "poor"],
     regret: ["regret", "wish", "should have", "mistake", "wrong choice"],
 
-    // --- COGNITIVE / MIXED ---
+
     stress: ["stress", "stressed", "pressure", "overwhelmed", "deadline", "busy", "tired", "exhausted", "drained", "burnout"],
     confusion: ["confused", "lost", "don't understand", "weird", "puzzle", "baffled", "what"],
     uncertainty: ["uncertain", "unsure", "maybe", "doubt", "don't know", "possibility", "indecisive"],
-    surprise: ["surprise", "shock", "shocked", "unexpected", "wow", "sudden", "amazed"],
+    surprise: ["surprise", "shock", "shocked", "unexpected", "expecting", "wow", "sudden", "amazed"],
     curiosity: ["curious", "interest", "wonder", "why", "how", "explore", "learn"],
     anticipation: ["anticipate", "wait", "waiting", "expecting", "hoping", "look forward"],
 
-    // --- POSITIVE ---
-    joy: ["joy", "happy", "happiness", "delight", "glad", "smile", "laugh", "fun", "good", "great"],
+
+    joy: ["joy", "happy", "happiness", "delight", "glad", "smile", "laugh", "fun", "good", "great", "amazing", "wonderful", "thank you", "thanks"],
     excitement: ["excited", "exciting", "pumped", "hype", "thrilled", "awesome", "energetic"],
     love: ["love", "loving", "adore", "crush", "care", "heart", "passion", "affection"],
     gratitude: ["grateful", "thankful", "thanks", "blessed", "appreciate"],
     pride: ["proud", "pride", "achievement", "won", "success", "accomplished"],
-    relief: ["relief", "relieved", "finally", "done", "safe", "calm"],
+    relief: ["relief", "relieved", "finally", "done", "safe"],
+    calm: ["calm", "calming", "peaceful", "peace", "serene", "relaxed", "relaxing", "chill", "chilling", "tranquil", "zen", "soothed"],
+    loneliness: ["lonely", "alone", "isolated", "isolation", "homesick", "alienated"],
 
-    // --- NEUTRAL ---
+
     neutral: ["okay", "fine", "normal", "nothing", "bored", "meh", "so-so"]
 };
 
-// Conflict Words (Physics Boosters)
+
 export const STRONG_CONFLICT_WORDS = ["fight", "fought", "yell", "yelled", "shout", "shouted", "scream", "screaming", "rage", "violence", "hit", "slap", "abuse"];
 export const MEDIUM_CONFLICT_WORDS = ["argue", "argued", "argument", "conflict", "dispute", "scold", "scolded", "blame", "blamed", "tension", "drama"];
 
-// Context Contexts
+
 export const CONTEXT_TRIGGERS = {
     academic: ["exam", "test", "study", "studying", "homework", "assignment", "grades", "school", "college"],
     professional: ["work", "job", "boss", "meeting", "deadline", "project", "presentation", "office"],

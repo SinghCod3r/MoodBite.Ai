@@ -1,4 +1,12 @@
-// evm/experts.js
+/**
+MoodBite.AI — Mood-Based Food Recommendation System
+Copyright (c) 2026 Ayush Singh
+Contact: ayushsinghceee@gmail.com
+Project: https://github.com/SinghCod3r/MoodBite.Ai
+This file is part of MoodBite.AI.
+See the LICENSE file for terms of use.
+*/
+
 import { EMOTION_LEXICON, STRONG_CONFLICT_WORDS, MEDIUM_CONFLICT_WORDS, CONTEXT_TRIGGERS } from './dictionaries';
 
 export class ExpertPanel {
@@ -7,11 +15,11 @@ export class ExpertPanel {
         this.words = this.text.split(/\s+|[.,!?;]+/);
     }
 
-    // 1. Direct Emotion Expert (The "Fast Track")
+
     consultDirect() {
         for (const [emotion, keywords] of Object.entries(EMOTION_LEXICON)) {
-            // Check if input IS exactly an emotion word or "i feel [emotion]"
-            // We use the first few keywords as primary labels
+
+
             if (this.words.includes(emotion) || keywords.slice(0, 3).some(k => this.text === k || this.text === `i feel ${k}`)) {
                 return { detected: true, emotion: emotion, confidence: 95 };
             }
@@ -19,7 +27,7 @@ export class ExpertPanel {
         return { detected: false };
     }
 
-    // 2. Conflict Expert (The "Physics Engine")
+
     consultConflict() {
         let arousalBoost = 0;
         let conflictLevel = "none";
@@ -35,7 +43,7 @@ export class ExpertPanel {
         return { arousalBoost, conflictLevel };
     }
 
-    // 3. Lexicon Expert (The "Scorer")
+
     consultLexicon() {
         let scores = {};
         for (const emotion in EMOTION_LEXICON) {
@@ -46,10 +54,10 @@ export class ExpertPanel {
         for (const [emotion, wordList] of Object.entries(keywords)) {
             for (const word of wordList) {
                 if (this.text.includes(word)) {
-                    // Match found
+
                     scores[emotion] += 1;
 
-                    // Boost for exact word match
+
                     if (this.words.includes(word)) scores[emotion] += 1;
                 }
             }
@@ -58,12 +66,12 @@ export class ExpertPanel {
         return scores;
     }
 
-    // 4. Context Expert (The "Situation Analyst")
+
     consultContext() {
         let contextMod = { control: 0, certainty: 0, stressBoost: 0 };
         let detectedContext = null;
 
-        // Academic / Professional -> Often High Stress, Low Control
+
         if (CONTEXT_TRIGGERS.academic.some(w => this.text.includes(w))) {
             detectedContext = "academic";
             contextMod.control -= 0.2;
