@@ -36,7 +36,7 @@
 
 While conversational tools answer general trivia, **MoodBite.Ai** is a dedicated, explainable, domain-specific culinary intelligence system designed to regulate human psychological and physiological states through food and beverage recommendations:
 
-$$\text{User Mood \& Context} \longrightarrow \text{Dietary Constraints} \longrightarrow \text{Sensory Intervention} \longrightarrow \text{Deterministic Ranking} \longrightarrow \text{Explainable Rationale}$$
+$$\text{User Mood and Context} \longrightarrow \text{Dietary Constraints} \longrightarrow \text{Sensory Intervention} \longrightarrow \text{Deterministic Ranking} \longrightarrow \text{Explainable Rationale}$$
 
 ### Key Principles
 
