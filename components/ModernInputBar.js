@@ -95,7 +95,7 @@ export default function ModernInputBar({
 
   return (
     <form onSubmit={handleChatSubmit} className="relative w-full max-w-2xl mx-auto z-40">
-      <div className="relative flex flex-col border border-white/20 rounded-3xl bg-[rgba(255,255,255,0.06)] backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-300">
+      <div className="relative flex flex-col border border-white/20 rounded-3xl bg-neutral-900/70 md:bg-[rgba(255,255,255,0.06)] backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-300">
 
         <AnimatePresence>
           {(previewImages.length > 0 || isScanning) && (

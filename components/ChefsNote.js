@@ -36,7 +36,7 @@ export default function ChefsNote({
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.2 }}
     >
-      <div className="bg-white/[0.06] backdrop-blur-xl border border-white/10 p-6 rounded-3xl space-y-5 shadow-2xl">
+      <div className="bg-neutral-900/70 md:bg-white/[0.06] backdrop-blur-xl border border-white/10 p-6 rounded-3xl space-y-5 shadow-2xl">
 
         <div>
           <h3 className="text-base font-serif italic text-white/90 mb-2 border-b border-white/10 pb-2 flex items-center justify-between">

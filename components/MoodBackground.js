@@ -7,131 +7,71 @@ This file is part of MoodBite.AI.
 See the LICENSE file for terms of use.
 */
 
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 const MOOD_GRADIENTS = {
-  neutral: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(67, 56, 202, 0.45) 0%, rgba(30, 27, 75, 0.7) 50%, #060913 100%), linear-gradient(180deg, #0d1226 0%, #05070e 100%)",
-    orb1: "radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, rgba(99, 102, 241, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(168, 85, 247, 0.5) 0%, rgba(168, 85, 247, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.3) 0%, transparent 70%)"
-  },
-  joy: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(217, 119, 6, 0.45) 0%, rgba(154, 52, 18, 0.65) 50%, #100603 100%), linear-gradient(180deg, #1f0d04 0%, #0a0402 100%)",
-    orb1: "radial-gradient(circle, rgba(245, 158, 11, 0.65) 0%, rgba(245, 158, 11, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(234, 88, 12, 0.55) 0%, rgba(234, 88, 12, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(251, 146, 60, 0.32) 0%, transparent 70%)"
-  },
-  stress: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(37, 99, 235, 0.45) 0%, rgba(30, 58, 138, 0.65) 50%, #030816 100%), linear-gradient(180deg, #091738 0%, #030713 100%)",
-    orb1: "radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, rgba(59, 130, 246, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(14, 165, 233, 0.5) 0%, rgba(14, 165, 233, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.3) 0%, transparent 70%)"
-  },
-  sadness: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(13, 148, 136, 0.45) 0%, rgba(19, 78, 74, 0.65) 50%, #021413 100%), linear-gradient(180deg, #072624 0%, #020c0c 100%)",
-    orb1: "radial-gradient(circle, rgba(20, 184, 166, 0.6) 0%, rgba(20, 184, 166, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(16, 185, 129, 0.5) 0%, rgba(16, 185, 129, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(45, 212, 191, 0.28) 0%, transparent 70%)"
-  },
-  anger: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(225, 29, 72, 0.45) 0%, rgba(136, 19, 55, 0.65) 50%, #160207 100%), linear-gradient(180deg, #27060e 0%, #0c0104 100%)",
-    orb1: "radial-gradient(circle, rgba(244, 63, 94, 0.65) 0%, rgba(244, 63, 94, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(239, 68, 68, 0.55) 0%, rgba(239, 68, 68, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(244, 63, 94, 0.32) 0%, transparent 70%)"
-  },
-  calm: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(8, 145, 178, 0.45) 0%, rgba(22, 78, 99, 0.65) 50%, #03141b 100%), linear-gradient(180deg, #092330 0%, #030d12 100%)",
-    orb1: "radial-gradient(circle, rgba(6, 182, 212, 0.6) 0%, rgba(6, 182, 212, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(20, 184, 166, 0.5) 0%, rgba(20, 184, 166, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(34, 211, 238, 0.3) 0%, transparent 70%)"
-  },
-  fear: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(126, 34, 206, 0.45) 0%, rgba(88, 28, 135, 0.65) 50%, #0e021a 100%), linear-gradient(180deg, #1e0735 0%, #07010d 100%)",
-    orb1: "radial-gradient(circle, rgba(168, 85, 247, 0.6) 0%, rgba(168, 85, 247, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, rgba(139, 92, 246, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(168, 85, 247, 0.3) 0%, transparent 70%)"
-  },
-  excitement: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(219, 39, 119, 0.45) 0%, rgba(131, 24, 67, 0.65) 50%, #16020c 100%), linear-gradient(180deg, #280617 0%, #0d0107 100%)",
-    orb1: "radial-gradient(circle, rgba(236, 72, 153, 0.65) 0%, rgba(236, 72, 153, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(245, 158, 11, 0.55) 0%, rgba(245, 158, 11, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(244, 114, 182, 0.32) 0%, transparent 70%)"
-  },
-  boredom: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(100, 116, 139, 0.45) 0%, rgba(51, 65, 85, 0.65) 50%, #090d16 100%), linear-gradient(180deg, #131b2e 0%, #060911 100%)",
-    orb1: "radial-gradient(circle, rgba(148, 163, 184, 0.5) 0%, rgba(148, 163, 184, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, rgba(99, 102, 241, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(148, 163, 184, 0.26) 0%, transparent 70%)"
-  },
-  loneliness: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(79, 70, 229, 0.45) 0%, rgba(30, 58, 138, 0.65) 50%, #030816 100%), linear-gradient(180deg, #0d1738 0%, #040816 100%)",
-    orb1: "radial-gradient(circle, rgba(129, 140, 248, 0.6) 0%, rgba(129, 140, 248, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(96, 165, 250, 0.5) 0%, rgba(96, 165, 250, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(129, 140, 248, 0.3) 0%, transparent 70%)"
-  },
-  ambiguous: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(147, 51, 234, 0.45) 0%, rgba(88, 28, 135, 0.65) 50%, #0e021a 100%), linear-gradient(180deg, #1d0636 0%, #08010f 100%)",
-    orb1: "radial-gradient(circle, rgba(192, 38, 211, 0.6) 0%, rgba(192, 38, 211, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(124, 58, 237, 0.5) 0%, rgba(124, 58, 237, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(192, 38, 211, 0.3) 0%, transparent 70%)"
-  },
-  unknown: {
-    gradient: "radial-gradient(ellipse 85% 60% at 50% 18%, rgba(79, 70, 229, 0.4) 0%, rgba(30, 41, 59, 0.65) 50%, #060913 100%), linear-gradient(180deg, #0f172a 0%, #05070e 100%)",
-    orb1: "radial-gradient(circle, rgba(99, 102, 241, 0.55) 0%, rgba(99, 102, 241, 0) 70%)",
-    orb2: "radial-gradient(circle, rgba(56, 189, 248, 0.45) 0%, rgba(56, 189, 248, 0) 70%)",
-    center: "radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.28) 0%, transparent 70%)"
-  }
+  neutral: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(99, 102, 241, 0.45) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.38) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(147, 51, 234, 0.30) 0%, transparent 55%), linear-gradient(180deg, #0d1226 0%, #060913 60%, #030408 100%)",
+  joy: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(245, 158, 11, 0.50) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(234, 88, 12, 0.42) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(217, 119, 6, 0.32) 0%, transparent 55%), linear-gradient(180deg, #241004 0%, #100602 60%, #050201 100%)",
+  stress: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(59, 130, 246, 0.50) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.42) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(14, 165, 233, 0.32) 0%, transparent 55%), linear-gradient(180deg, #0b1a40 0%, #040c20 60%, #02050e 100%)",
+  sadness: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(20, 184, 166, 0.46) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(13, 148, 136, 0.40) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(16, 185, 129, 0.28) 0%, transparent 55%), linear-gradient(180deg, #082926 0%, #031413 60%, #010808 100%)",
+  anger: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(244, 63, 94, 0.50) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(225, 29, 72, 0.42) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(239, 68, 68, 0.32) 0%, transparent 55%), linear-gradient(180deg, #2c0710 0%, #140206 60%, #060102 100%)",
+  calm: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(6, 182, 212, 0.46) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(8, 145, 178, 0.40) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(20, 184, 166, 0.28) 0%, transparent 55%), linear-gradient(180deg, #092837 0%, #03141c 60%, #01070a 100%)",
+  fear: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(168, 85, 247, 0.50) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(126, 34, 206, 0.42) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(139, 92, 246, 0.32) 0%, transparent 55%), linear-gradient(180deg, #22083c 0%, #0d0218 60%, #040108 100%)",
+  excitement: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(236, 72, 153, 0.50) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(219, 39, 119, 0.42) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(245, 158, 11, 0.32) 0%, transparent 55%), linear-gradient(180deg, #2d071a 0%, #14020b 60%, #060104 100%)",
+  boredom: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(148, 163, 184, 0.40) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(100, 116, 139, 0.35) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(99, 102, 241, 0.25) 0%, transparent 55%), linear-gradient(180deg, #151e33 0%, #090e18 60%, #030509 100%)",
+  loneliness: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(129, 140, 248, 0.46) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.40) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(96, 165, 250, 0.30) 0%, transparent 55%), linear-gradient(180deg, #0e193c 0%, #050b1d 60%, #02040c 100%)",
+  ambiguous: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(192, 38, 211, 0.48) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(147, 51, 234, 0.40) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(124, 58, 237, 0.30) 0%, transparent 55%), linear-gradient(180deg, #22073e 0%, #0c0116 60%, #040008 100%)",
+  unknown: "radial-gradient(ellipse 80% 50% at 50% 12%, rgba(99, 102, 241, 0.42) 0%, transparent 70%), radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.35) 0%, transparent 55%), radial-gradient(circle at 90% 75%, rgba(56, 189, 248, 0.25) 0%, transparent 55%), linear-gradient(180deg, #111a30 0%, #070c17 60%, #020509 100%)"
 };
 
 export default function MoodBackground({ mood = "neutral" }) {
-  const current = MOOD_GRADIENTS[mood] || MOOD_GRADIENTS.neutral;
+  const [currentMood, setCurrentMood] = useState(mood);
+  const [previousMood, setPreviousMood] = useState(null);
+  const [isCrossFading, setIsCrossFading] = useState(false);
+
+  useEffect(() => {
+    if (mood !== currentMood) {
+      setPreviousMood(currentMood);
+      setCurrentMood(mood);
+      setIsCrossFading(true);
+
+      const timer = setTimeout(() => {
+        setIsCrossFading(false);
+        setPreviousMood(null);
+      }, 700);
+
+      return () => clearTimeout(timer);
+    }
+  }, [mood, currentMood]);
+
+  const activeGradient = MOOD_GRADIENTS[currentMood] || MOOD_GRADIENTS.neutral;
+  const prevGradient = previousMood ? (MOOD_GRADIENTS[previousMood] || MOOD_GRADIENTS.neutral) : null;
 
   return (
-    <div
-      className="fixed inset-0 w-full h-full pointer-events-none overflow-hidden z-0 transition-all duration-1000"
-      style={{ background: current.gradient }}
-    >
-      {/* Central Ambient Aura right behind main content */}
+    <div className="fixed inset-0 w-full h-full pointer-events-none overflow-hidden z-0" aria-hidden="true">
+      {/* Primary Current Mood Layer */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[90vw] h-[60vh] max-w-[1100px] pointer-events-none transition-all duration-1000"
+        className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
-          background: current.center,
-          filter: "blur(60px)"
+          background: activeGradient,
+          transform: 'translate3d(0, 0, 0)',
+          backfaceVisibility: 'hidden'
         }}
       />
 
-      {/* Floating Animated Ambient Orb 1 */}
-      <motion.div
-        animate={{
-          x: [0, 40, 0],
-          y: [0, -30, 0],
-          scale: [1, 1.12, 1]
-        }}
-        transition={{
-          duration: 9,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute -top-[5%] -left-[5%] w-[55vw] h-[55vw] max-w-[700px] max-h-[700px] rounded-full pointer-events-none"
-        style={{ background: current.orb1, filter: "blur(65px)" }}
-      />
-
-      {/* Floating Animated Ambient Orb 2 */}
-      <motion.div
-        animate={{
-          x: [0, -40, 0],
-          y: [0, 30, 0],
-          scale: [1, 1.15, 1]
-        }}
-        transition={{
-          duration: 11,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute -bottom-[5%] -right-[5%] w-[55vw] h-[55vw] max-w-[700px] max-h-[700px] rounded-full pointer-events-none"
-        style={{ background: current.orb2, filter: "blur(65px)" }}
-      />
+      {/* Cross-fade Previous Layer for 100% GPU-only Dissolve */}
+      {prevGradient && (
+        <div
+          className={`absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-700 ease-out ${
+            isCrossFading ? 'opacity-0' : 'opacity-100'
+          }`}
+          style={{
+            background: prevGradient,
+            transform: 'translate3d(0, 0, 0)',
+            backfaceVisibility: 'hidden'
+          }}
+        />
+      )}
     </div>
   );
 }

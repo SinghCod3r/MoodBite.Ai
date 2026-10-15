@@ -278,7 +278,7 @@ export default function HomePage() {
   const moodDetails = MOOD_EMOJIS[predictedMood] || { emoji: "✨", label: predictedMood };
 
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden overflow-y-auto font-sans text-white">
+    <div className="relative min-h-screen w-full overflow-x-hidden font-sans text-white">
 
       <MoodBackground mood={predictedMood} />
 

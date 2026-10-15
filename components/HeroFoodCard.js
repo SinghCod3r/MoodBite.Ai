@@ -69,10 +69,10 @@ export default function HeroFoodCard({
 
   return (
     <motion.div
-      className="relative w-full max-w-sm mx-auto aspect-[3/4] rounded-3xl overflow-hidden border border-white/20 shadow-2xl bg-black/40 backdrop-blur-xl"
-      initial={{ y: 25, opacity: 0 }}
+      className="relative w-full max-w-sm mx-auto aspect-[3/4] rounded-3xl overflow-hidden border border-white/20 shadow-2xl bg-neutral-950/70 backdrop-blur-xl"
+      initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, type: "spring" }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
     >
 
       <div className="absolute inset-0 w-full h-full">
