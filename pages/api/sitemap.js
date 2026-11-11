@@ -5,6 +5,20 @@
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://moodbite.ai';
 
+function escapeXml(unsafe) {
+  if (!unsafe) return '';
+  return String(unsafe).replace(/[<>&'"]/g, (c) => {
+    switch (c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case '\'': return '&apos;';
+      case '"': return '&quot;';
+      default: return c;
+    }
+  });
+}
+
 const staticPages = [
   { path: '/', changefreq: 'daily', priority: 1.0, lastmod: new Date().toISOString().split('T')[0] },
   { path: '/about', changefreq: 'weekly', priority: 0.9, lastmod: new Date().toISOString().split('T')[0] },
@@ -31,7 +45,7 @@ const featurePages = [
   { path: '/features/mood-trajectory', changefreq: 'monthly', priority: 0.7 },
 ];
 
-function generateSitemap() {
+function generateSitemap(baseUrl = BASE_URL) {
   const today = new Date().toISOString().split('T')[0];
   
   let urls = '';
@@ -39,54 +53,43 @@ function generateSitemap() {
   // Static pages
   staticPages.forEach(page => {
     urls += `  <url>\n`;
-    urls += `    <loc>${BASE_URL}${page.path}</loc>\n`;
-    urls += `    <lastmod>${page.lastmod}</lastmod>\n`;
-    urls += `    <changefreq>${page.changefreq}</changefreq>\n`;
+    urls += `    <loc>${escapeXml(`${baseUrl}${page.path}`)}</loc>\n`;
+    urls += `    <lastmod>${escapeXml(page.lastmod)}</lastmod>\n`;
+    urls += `    <changefreq>${escapeXml(page.changefreq)}</changefreq>\n`;
     urls += `    <priority>${page.priority}</priority>\n`;
     urls += `  </url>\n`;
   });
   
-  // Mood-specific pages
-  moodPages.forEach(({ mood, label }) => {
+  // Mood-specific pages (Standard XML sitemap format for search engines)
+  moodPages.forEach(({ mood }) => {
     urls += `  <url>\n`;
-    urls += `    <loc>${BASE_URL}/mood/${mood}</loc>\n`;
+    urls += `    <loc>${escapeXml(`${baseUrl}/mood/${mood}`)}</loc>\n`;
     urls += `    <lastmod>${today}</lastmod>\n`;
     urls += `    <changefreq>weekly</changefreq>\n`;
     urls += `    <priority>0.7</priority>\n`;
-    urls += `    <news:news>\n`;
-    urls += `      <news:publication>\n`;
-    urls += `        <news:name>MoodBite.AI</news:name>\n`;
-    urls += `        <news:language>en</news:language>\n`;
-    urls += `      </news:publication>\n`;
-    urls += `      <news:publication_date>${today}</news:publication_date>\n`;
-    urls += `      <news:title>Food recommendations for ${label}</news:title>\n`;
-    urls += `    </news:news>\n`;
     urls += `  </url>\n`;
   });
   
   // Feature pages
   featurePages.forEach(page => {
     urls += `  <url>\n`;
-    urls += `    <loc>${BASE_URL}${page.path}</loc>\n`;
+    urls += `    <loc>${escapeXml(`${baseUrl}${page.path}`)}</loc>\n`;
     urls += `    <lastmod>${today}</lastmod>\n`;
-    urls += `    <changefreq>${page.changefreq}</changefreq>\n`;
+    urls += `    <changefreq>${escapeXml(page.changefreq)}</changefreq>\n`;
     urls += `    <priority>${page.priority}</priority>\n`;
     urls += `  </url>\n`;
   });
   
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls}</urlset>`;
   
   return sitemap;
 }
 
 export default function handler(req, res) {
-  const sitemap = generateSitemap();
+  const sitemap = generateSitemap(BASE_URL);
   
   res.setHeader('Content-Type', 'application/xml; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');

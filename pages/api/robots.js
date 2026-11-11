@@ -21,6 +21,7 @@ Disallow: /api/
 Disallow: /_next/
 Disallow: /static/
 Disallow: /*.json$
+Allow: /sitemap.xml
 Disallow: /*.xml$
 Disallow: /*.webmanifest$
 Disallow: /sw.js
