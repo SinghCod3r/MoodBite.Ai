@@ -3,8 +3,17 @@
  * Serves robots.txt for search engine crawlers
  */
 
+function getBaseUrl(req) {
+  const host = req?.headers?.['x-forwarded-host'] || req?.headers?.host;
+  if (host) {
+    const proto = req?.headers?.['x-forwarded-proto'] || (host.includes('localhost') ? 'http' : 'https');
+    return `${proto}://${host}`.replace(/\/$/, '');
+  }
+  return (process.env.NEXT_PUBLIC_SITE_URL || 'https://moodbite.ai').replace(/\/$/, '');
+}
+
 export default function handler(req, res) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://moodbite.ai';
+  const baseUrl = getBaseUrl(req);
   
   const robotsTxt = `# MoodBite.AI - robots.txt
 # Generated automatically

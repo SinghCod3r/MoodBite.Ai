@@ -3,7 +3,14 @@
  * Generates dynamic sitemap for search engines with comprehensive coverage
  */
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://moodbite.ai';
+function getBaseUrl(req) {
+  const host = req?.headers?.['x-forwarded-host'] || req?.headers?.host;
+  if (host) {
+    const proto = req?.headers?.['x-forwarded-proto'] || (host.includes('localhost') ? 'http' : 'https');
+    return `${proto}://${host}`.replace(/\/$/, '');
+  }
+  return (process.env.NEXT_PUBLIC_SITE_URL || 'https://moodbite.ai').replace(/\/$/, '');
+}
 
 function escapeXml(unsafe) {
   if (!unsafe) return '';
@@ -19,33 +26,38 @@ function escapeXml(unsafe) {
   });
 }
 
+function formatUrl(baseUrl, path) {
+  const cleanPath = path === '/' ? '/' : (path.endsWith('/') ? path : `${path}/`);
+  return escapeXml(`${baseUrl}${cleanPath}`);
+}
+
 const staticPages = [
   { path: '/', changefreq: 'daily', priority: 1.0, lastmod: new Date().toISOString().split('T')[0] },
-  { path: '/about', changefreq: 'weekly', priority: 0.9, lastmod: new Date().toISOString().split('T')[0] },
+  { path: '/about/', changefreq: 'weekly', priority: 0.9, lastmod: new Date().toISOString().split('T')[0] },
 ];
 
 const moodPages = [
-  { mood: 'joy', label: 'Joy & Celebration' },
-  { mood: 'excitement', label: 'Excitement & High Energy' },
-  { mood: 'calm', label: 'Calm & Grounding' },
-  { mood: 'stress', label: 'Stress Relief' },
-  { mood: 'sadness', label: 'Comfort & Serotonin' },
-  { mood: 'anger', label: 'Sensory Venting' },
-  { mood: 'fear', label: 'Soothing Warmth' },
-  { mood: 'boredom', label: 'Sensory Awakening' },
-  { mood: 'loneliness', label: 'Nourishing Care' },
-  { mood: 'neutral', label: 'Balanced Daily Fuel' },
+  { mood: 'joy' },
+  { mood: 'excitement' },
+  { mood: 'calm' },
+  { mood: 'stress' },
+  { mood: 'sadness' },
+  { mood: 'anger' },
+  { mood: 'fear' },
+  { mood: 'boredom' },
+  { mood: 'loneliness' },
+  { mood: 'neutral' },
 ];
 
 const featurePages = [
-  { path: '/features/voice-input', changefreq: 'monthly', priority: 0.7 },
-  { path: '/features/offline-mode', changefreq: 'monthly', priority: 0.7 },
-  { path: '/features/privacy', changefreq: 'monthly', priority: 0.7 },
-  { path: '/features/dietary-filters', changefreq: 'monthly', priority: 0.7 },
-  { path: '/features/mood-trajectory', changefreq: 'monthly', priority: 0.7 },
+  { path: '/features/voice-input/', changefreq: 'monthly', priority: 0.7 },
+  { path: '/features/offline-mode/', changefreq: 'monthly', priority: 0.7 },
+  { path: '/features/privacy/', changefreq: 'monthly', priority: 0.7 },
+  { path: '/features/dietary-filters/', changefreq: 'monthly', priority: 0.7 },
+  { path: '/features/mood-trajectory/', changefreq: 'monthly', priority: 0.7 },
 ];
 
-function generateSitemap(baseUrl = BASE_URL) {
+function generateSitemap(baseUrl) {
   const today = new Date().toISOString().split('T')[0];
   
   let urls = '';
@@ -53,7 +65,7 @@ function generateSitemap(baseUrl = BASE_URL) {
   // Static pages
   staticPages.forEach(page => {
     urls += `  <url>\n`;
-    urls += `    <loc>${escapeXml(`${baseUrl}${page.path}`)}</loc>\n`;
+    urls += `    <loc>${formatUrl(baseUrl, page.path)}</loc>\n`;
     urls += `    <lastmod>${escapeXml(page.lastmod)}</lastmod>\n`;
     urls += `    <changefreq>${escapeXml(page.changefreq)}</changefreq>\n`;
     urls += `    <priority>${page.priority}</priority>\n`;
@@ -63,7 +75,7 @@ function generateSitemap(baseUrl = BASE_URL) {
   // Mood-specific pages (Standard XML sitemap format for search engines)
   moodPages.forEach(({ mood }) => {
     urls += `  <url>\n`;
-    urls += `    <loc>${escapeXml(`${baseUrl}/mood/${mood}`)}</loc>\n`;
+    urls += `    <loc>${formatUrl(baseUrl, `/mood/${mood}/`)}</loc>\n`;
     urls += `    <lastmod>${today}</lastmod>\n`;
     urls += `    <changefreq>weekly</changefreq>\n`;
     urls += `    <priority>0.7</priority>\n`;
@@ -73,7 +85,7 @@ function generateSitemap(baseUrl = BASE_URL) {
   // Feature pages
   featurePages.forEach(page => {
     urls += `  <url>\n`;
-    urls += `    <loc>${escapeXml(`${baseUrl}${page.path}`)}</loc>\n`;
+    urls += `    <loc>${formatUrl(baseUrl, page.path)}</loc>\n`;
     urls += `    <lastmod>${today}</lastmod>\n`;
     urls += `    <changefreq>${escapeXml(page.changefreq)}</changefreq>\n`;
     urls += `    <priority>${page.priority}</priority>\n`;
@@ -89,7 +101,8 @@ ${urls}</urlset>`;
 }
 
 export default function handler(req, res) {
-  const sitemap = generateSitemap(BASE_URL);
+  const baseUrl = getBaseUrl(req);
+  const sitemap = generateSitemap(baseUrl);
   
   res.setHeader('Content-Type', 'application/xml; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
