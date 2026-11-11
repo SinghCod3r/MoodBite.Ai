@@ -105,6 +105,6 @@ export default function handler(req, res) {
   const sitemap = generateSitemap(baseUrl);
   
   res.setHeader('Content-Type', 'application/xml; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+  res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=86400');
   res.send(sitemap);
 }
